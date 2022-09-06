@@ -1,9 +1,11 @@
 package edu.kh.emp.view;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import edu.kh.emp.model.dao.EmployeeDAO;
+import edu.kh.emp.model.vo.Employee;
 
 // 화면용 클래스(입력(Scanner)/출력(Print())
 public class EmployeeView {
@@ -38,7 +40,7 @@ public class EmployeeView {
 				switch(input) {
 				case 1 : 
 					break;
-				case 2 : 
+				case 2 : this.selectAll();
 					break;
 				case 3 : 
 					break;
@@ -65,4 +67,32 @@ public class EmployeeView {
 		
 	}
 
+	/**
+	 * 전체 사원 정보 조회
+	 */
+	public void selectAll() {
+		System.out.println("==<전체 사원 정보 조회>==");
+		// DB에서 전체 사원 정보를 조회하여 List<Employee>형태로 반환하는
+		// dao.selectAll() 메서드 호출
+		List<Employee> empList=dao.sellectAll();
+		printAll(empList);
+	}
+
+	/** 전달받은 사원 List 출력하기
+	 * @param empList
+	 */
+	public void printAll(List<Employee> empList) {
+		if(empList.isEmpty()) {
+			System.out.println("조회된 사원 정보가 없습니다.");
+			
+		} else {
+			System.out.println("사번   |   이름  | 주민 등록 번호   |        이메일         |   전화 번호   | 부서 | 직책 | 급여" );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			for(Employee emp : empList) { 
+				System.out.printf(" %2d  | %4s | %s | %20s | %s | %s | %s | %d\n",
+						emp.getEmpId(), emp.getEmpName(), emp.getEmpNo(), emp.getEmail(), 
+						emp.getPhone(), emp.getDepartmentTitle(), emp.getJobName(), emp.getSalary());
+			}
+		}
+	}
 }
