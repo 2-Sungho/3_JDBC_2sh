@@ -41,7 +41,7 @@ public class JDBCExample5 {
 			
 			String sql="SELECT EMP_NAME 이름 ,TO_CHAR(HIRE_DATE,'YYYY\"년\" MM\"월\" DD\"일\"') 입사일,"
 					+ " DECODE(SUBSTR(EMP_NO,8,1),'1','M','2','F') 성별"
-					+ " FROM EMPLOYEE e\r\n"
+					+ " FROM EMPLOYEE"
 					+ " WHERE HIRE_DATE < TO_DATE('"+ipHireDate+"')";
 			// 문자열 내부에 쌍따옴표 작성시 \"로 작성해야한다 -> Escape문자
 			
