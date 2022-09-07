@@ -27,33 +27,39 @@ public class EmployeeView {
 				System.out.println("3. 사번이 일치하는 사원 정보 조회");
 				System.out.println("4. 사번이 일치하는 사원 정보 수정");
 				System.out.println("5. 사번이 일치하는 사원 정보 삭제");
-				System.out.println("6. 입력 받은 부서와 일치 모든 사원 정보 조회");
+				System.out.println("6. 입력 받은 부서와 일치하는 모든 사원 정보 조회");
 				System.out.println("7. 입력 받은 급여 이상을 받는 모든 사원 정보 조회");
 				System.out.println("8. 부서별 급여 합 전체 조회");
+				System.out.println("9. 주민등록번호가 일치하는 사원 정보 조회");
 				System.out.println("0. 프로그램 종료");
 				
 				System.out.print("메뉴 선택 >> ");
 				input = sc.nextInt();
+				sc.nextLine();
 				
 				System.out.println();
 				
 				switch(input) {
-				case 1 : 
+				case 1 : this.insertEmployee();
 					break;
 				case 2 : this.selectAll();
 					break;
-				case 3 : 
+				case 3 : this.SelectEmpId();
 					break;
-				case 4 : 
+				case 4 : this.updateEmployee();
 					break;
-				case 5 : 
+				case 5 : this.deleteEmployee();
 					break;
 				case 6 : 
 					break;
 				case 7 : 
 					break;
-				case 8 : System.out.println("프로그램을 종료합니다.");
+				case 8 : 
 					break;
+				case 9 : this.selectEmpNo();
+					break;
+				case 0 : System.out.println("프로그램을 종료합니다.");
+				break;
 				default : System.out.println("메뉴에 존재하는 번호만 입력하세요.");
 				}
 				
@@ -66,6 +72,7 @@ public class EmployeeView {
 		}while(input!=0);
 		
 	}
+
 
 	/**
 	 * 전체 사원 정보 조회
@@ -86,7 +93,7 @@ public class EmployeeView {
 			System.out.println("조회된 사원 정보가 없습니다.");
 			
 		} else {
-			System.out.println("사번   |   이름  | 주민 등록 번호   |        이메일         |   전화 번호   | 부서 | 직책 | 급여" );
+			System.out.println(" 사번  |   이름  | 주민 등록 번호   |        이메일         |   전화 번호   | 부서 | 직책 | 급여" );
 			System.out.println("------------------------------------------------------------------------------------------------");
 			for(Employee emp : empList) { 
 				System.out.printf(" %2d  | %4s | %s | %20s | %s | %s | %s | %d\n",
@@ -95,4 +102,160 @@ public class EmployeeView {
 			}
 		}
 	}
+	
+	/** 사원 한명 출력하기
+	 * @param emp
+	 */
+	public void printOne(Employee emp) {
+		if(emp==null) {
+			System.out.println("조회된 사원 정보가 없습니다.");
+		}else {
+			System.out.println(" 사번  |   이름  | 주민 등록 번호   |        이메일         |   전화 번호   | 부서 | 직책 | 급여" );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			
+			System.out.printf(" %2d  | %4s | %s | %20s | %s | %s | %s | %d\n",
+				emp.getEmpId(), emp.getEmpName(), emp.getEmpNo(), emp.getEmail(), 
+				emp.getPhone(), emp.getDepartmentTitle(), emp.getJobName(), emp.getSalary());
+			}
+	}
+	
+	private void SelectEmpId() {
+		System.out.println("==<사번이 일치하는 사원 정보 조회>==");
+		
+		// 사번 입력받기
+		int empId=inputEmpId();
+		// 입력받은 사번을 DAO의 selectEmpId()메서드로 전달하여
+		// 조회된 사원정보 반환받기
+		Employee emp=dao.selectEmpId(empId);
+		printOne(emp);		
+	}
+	
+	/** 사번을 입력받아 반환하는 메서드
+	 * @return
+	 */
+	public int inputEmpId() {
+		System.out.print("사번 입력: ");
+		int empId=sc.nextInt();
+		sc.nextLine();
+		
+		return empId;
+	}
+	
+	/**
+	 * 주민등록번호가 일치하는 사원 정보 조회
+	 */
+	private void selectEmpNo() {
+		System.out.println("==<주민등록번호가 일치하는 사원 정보 조회>==");
+		
+		System.out.print("주민등록번호 입력: ");
+		String empNo=sc.next();
+		
+		Employee emp=dao.selectEmpNo(empNo);
+		printOne(emp);
+	}
+	/**
+	 * 사원 정보 추가
+	 */
+	private void insertEmployee() {
+		System.out.println("==<사원 정보 추가>==");
+		
+		int empId=inputEmpId();
+		
+		System.out.print("이름: ");
+		String empName=sc.next();
+		
+		System.out.print("주민등록번호: ");
+		String empNo=sc.next();
+		
+		System.out.print("이메일: ");
+		String email=sc.next();
+		
+		System.out.print("전화번호: ");
+		String phone=sc.next();
+		
+		System.out.print("부서코드(D1~D9): ");
+		String deptCode=sc.next();
+		
+		System.out.print("직급코드(J1~J7): ");
+		String jobCode=sc.next();
+		
+		System.out.print("급여등급(S1~S6): ");
+		String salLevel=sc.next();
+		
+		System.out.print("급여: ");
+		int salary=sc.nextInt();
+		
+		System.out.print("보너스: ");
+		double bonus=sc.nextDouble();
+		
+		System.out.print("사수번호: ");
+		int managerId=sc.nextInt();
+		
+		// 입력받은 값을 Employee객체에 담아서 DAO로 전달
+		Employee emp=new Employee(empId, empName, empNo, email, phone, deptCode, jobCode, salLevel, salary, bonus, managerId);
+		
+		int result=dao.insertEmployee(emp);
+		// INSERT, UPDATE, DELETE 같은 DML구문은 수행 후 테이블에 반영된 행의 개수를 반환함
+		// -> 조건이 잘못된 경우 반영된 행이 없으므로 0 반환
+		
+		if(result>0) { // DML 구문 성공 시
+			System.out.println("사원 정보 추가 성공");
+		}else { // DML 구문 실패 시
+			System.out.println("사원 정보 추가 실패");
+		}
+	}
+	
+	private void updateEmployee() {
+		System.out.println("==<사번이 일치하는 사원 정보 수정>==");
+		
+		int empId=inputEmpId();
+		
+		System.out.print("이메일: ");
+		String email=sc.next();
+		
+		System.out.print("전화번호(-제외): ");
+		String phone=sc.next();
+		
+		System.out.print("급여: ");
+		int salary=sc.nextInt();
+		
+		Employee emp=new Employee();
+		
+		emp.setEmpId(empId);
+		emp.setEmail(email);
+		emp.setPhone(phone);
+		emp.setSalary(salary);
+		
+		int result=dao.updateEmployee(emp); // UPDATE -> 반영된 행의 개수 반환(int형)
+		
+		if(result>0) {
+			System.out.println("사원 정보가 수정되었습니다.");
+		}else {
+			System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");
+		}
+	}
+	
+	private void deleteEmployee() {
+		System.out.println("==<사번이 일치하는 사원 정보 삭제>==");
+		
+		int empId=inputEmpId();
+		
+		System.out.print("정말 삭제하시겠습니까?(Y/N) ");
+		char input=sc.next().toUpperCase().charAt(0); // Y/N 대소문자 구문 없이 입력 -> 모두 대문자로 변환
+		
+		if(input=='Y') {
+			// 삭제를 수행하는 DAO 호출
+			int result=dao.deleteEmployee(empId);
+			if(result>0) {
+				System.out.println("사원 정보가 삭제되었습니다."); 
+			}else {
+				System.out.println("사번이 일치하는 사원이 존재하지 않습니다.");
+			}
+		}else {
+			System.out.println("취소되었습니다.");
+		}
+		
+		
+	}
+	
 }
