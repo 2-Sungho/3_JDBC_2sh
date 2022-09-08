@@ -1,7 +1,11 @@
 package edu.kh.emp.view;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import edu.kh.emp.model.dao.EmployeeDAO;
@@ -28,9 +32,18 @@ public class EmployeeView {
 				System.out.println("4. 사번이 일치하는 사원 정보 수정");
 				System.out.println("5. 사번이 일치하는 사원 정보 삭제");
 				System.out.println("6. 입력 받은 부서와 일치하는 모든 사원 정보 조회");
+				// selectDeptEmp()
 				System.out.println("7. 입력 받은 급여 이상을 받는 모든 사원 정보 조회");
+				// selectSalaryEmp()
 				System.out.println("8. 부서별 급여 합 전체 조회");
+				// selectDeptTotalSalary()
+	            // DB 조회 결과를 HashMap<String, Integer>에 옮겨 담아서 반환
+	            // 부서코드, 급여 합 조회
 				System.out.println("9. 주민등록번호가 일치하는 사원 정보 조회");
+				System.out.println("10. 직급별 급여 평균 조회");
+				// selectJobAvgSalary()
+	            // DB 조회 결과를 HashMap<String, Double>에 옮겨 담아서 반환 
+	            // 직급명, 급여 평균 조회
 				System.out.println("0. 프로그램 종료");
 				
 				System.out.print("메뉴 선택 >> ");
@@ -50,13 +63,15 @@ public class EmployeeView {
 					break;
 				case 5 : this.deleteEmployee();
 					break;
-				case 6 : 
+				case 6 : this.selectDeptEmp();
 					break;
-				case 7 : 
+				case 7 : this.selectSalaryEmp();
 					break;
-				case 8 : 
+				case 8 : this.selectDeptTotalSalary();
 					break;
 				case 9 : this.selectEmpNo();
+					break;
+				case 10 : this.selectJobAvgSalary();
 					break;
 				case 0 : System.out.println("프로그램을 종료합니다.");
 				break;
@@ -119,7 +134,7 @@ public class EmployeeView {
 			}
 	}
 	
-	private void SelectEmpId() {
+	public void SelectEmpId() {
 		System.out.println("==<사번이 일치하는 사원 정보 조회>==");
 		
 		// 사번 입력받기
@@ -144,7 +159,7 @@ public class EmployeeView {
 	/**
 	 * 주민등록번호가 일치하는 사원 정보 조회
 	 */
-	private void selectEmpNo() {
+	public void selectEmpNo() {
 		System.out.println("==<주민등록번호가 일치하는 사원 정보 조회>==");
 		
 		System.out.print("주민등록번호 입력: ");
@@ -156,7 +171,7 @@ public class EmployeeView {
 	/**
 	 * 사원 정보 추가
 	 */
-	private void insertEmployee() {
+	public void insertEmployee() {
 		System.out.println("==<사원 정보 추가>==");
 		
 		int empId=inputEmpId();
@@ -205,7 +220,7 @@ public class EmployeeView {
 		}
 	}
 	
-	private void updateEmployee() {
+	public void updateEmployee() {
 		System.out.println("==<사번이 일치하는 사원 정보 수정>==");
 		
 		int empId=inputEmpId();
@@ -235,7 +250,7 @@ public class EmployeeView {
 		}
 	}
 	
-	private void deleteEmployee() {
+	public void deleteEmployee() {
 		System.out.println("==<사번이 일치하는 사원 정보 삭제>==");
 		
 		int empId=inputEmpId();
@@ -256,6 +271,69 @@ public class EmployeeView {
 		}
 		
 		
+	}
+	
+	/**
+	 * 입력받은 부서와 일치하는 사원 정보 조회
+	 */
+	public void selectDeptEmp() {
+		System.out.println("==<입력 받은 부서와 일치하는 모든 사원 정보 조회>==");
+		
+		System.out.print("부서 입력: ");
+		String deptTitle=sc.next();
+		
+		List<Employee> resultList=dao.selectDeptEmp(deptTitle);
+		if(resultList.isEmpty()) {
+			System.out.println("부서명이 일치하는 사원이 없습니다.");
+		}else {
+			printAll(resultList);
+		}
+	}
+	
+	/**
+	 * 입력 받은 급여 이상을 받는 모든 사원 정보 조회
+	 */
+	public void selectSalaryEmp() {
+		System.out.println("==<입력 받은 급여 이상을 받는 모든 사원 정보 조회>==");
+		
+		System.out.print("급여 입력: ");
+		int salary=sc.nextInt();
+		sc.nextLine();
+		
+		List<Employee> resultList=dao.selectSalaryEmp(salary);
+		if(resultList.isEmpty()) {
+			System.out.println("해당 급여 이상을 받는 사원이 존재하지 않습니다.");
+		}else {
+			printAll(resultList);
+		}
+		
+	}
+	
+	/**
+	 * 부서별 급여 합 전체 조회
+	 */
+	public void selectDeptTotalSalary() {
+		System.out.println("==<부서별 급여 합 전체 조회>==");
+
+		Map<String, Integer> deptMap=dao.selectDeptTotalSalary();
+		
+		for(String key : deptMap.keySet()) {
+			System.out.println(key+" / "+deptMap.get(key));
+		}
+		
+	}
+	
+	/**
+	 * 직급별 급여 평균 조회
+	 */
+	public void selectJobAvgSalary() {
+		System.out.println("==<직급별 급여 평균 조회>==");
+		
+		Map<String, Double> salaryMap=dao.selectJobAvgSalary();
+		
+		for(String key : salaryMap.keySet()) {
+			System.out.println(key+" / "+salaryMap.get(key));
+		}
 	}
 	
 }

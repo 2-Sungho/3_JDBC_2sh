@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.kh.emp.model.vo.Employee;
 import edu.kh.emp.view.EmployeeView;
@@ -321,6 +323,157 @@ public class EmployeeDAO {
 			}
 		}
 		return result;
+	}
+
+
+	public List<Employee> selectDeptEmp(String deptTitle) {
+		List<Employee> resultList=new ArrayList<>();
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url,user,pw);
+			String sql="SELECT EMP_ID ,EMP_NAME ,EMP_NO ,EMAIL ,PHONE ,NVL(DEPT_TITLE,'부서없음'),JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID=DEPT_CODE)"
+					+ " JOIN JOB USING (JOB_CODE)"
+					+ " WHERE DEPT_TITLE=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, deptTitle);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int empId=rs.getInt("EMP_ID");
+				String empName=rs.getString("EMP_NAME");
+				String empNo=rs.getString("EMP_NO");
+				String email=rs.getString("EMAIL");
+				String phone=rs.getString("PHONE");
+				deptTitle=rs.getString("NVL(DEPT_TITLE,'부서없음')");
+				String jobName=rs.getString("JOB_NAME");
+				int salary=rs.getInt("SALARY");
+				
+				resultList.add(new Employee(empId, empName, empNo, email, phone, deptTitle, jobName, salary));
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(stmt!=null) stmt.close();
+				if(conn!=null) conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return resultList;
+	}
+
+
+	public List<Employee> selectSalaryEmp(int salary) {
+		List<Employee> resultLlst=new ArrayList<>();
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url,user,pw);
+			String sql="SELECT EMP_ID ,EMP_NAME ,EMP_NO ,EMAIL ,PHONE ,NVL(DEPT_TITLE,'부서없음'),JOB_NAME, SALARY"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT ON (DEPT_ID=DEPT_CODE)"
+					+ " JOIN JOB USING (JOB_CODE)"
+					+ " WHERE SALARY>=?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setInt(1, salary);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int empId=rs.getInt("EMP_ID");
+				String empName=rs.getString("EMP_NAME");
+				String empNo=rs.getString("EMP_NO");
+				String email=rs.getString("EMAIL");
+				String phone=rs.getString("PHONE");
+				String deptTitle=rs.getString("NVL(DEPT_TITLE,'부서없음')");
+				String jobName=rs.getString("JOB_NAME");
+				salary=rs.getInt("SALARY");
+				
+				resultLlst.add(new Employee(empId, empName, empNo, email, phone, deptTitle, jobName, salary));
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultLlst;
+	}
+
+	public Map<String, Integer> selectDeptTotalSalary() {
+		Map<String, Integer> deptMap=new HashMap<>();
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url,user,pw);
+			String sql="SELECT NVL(DEPT_TITLE,'부서없음'), SUM(SALARY)"
+					+ " FROM EMPLOYEE"
+					+ " LEFT JOIN DEPARTMENT d ON (DEPT_CODE=DEPT_ID)"
+					+ " GROUP BY DEPT_TITLE";
+			stmt=conn.createStatement();
+			rs=stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				String deptTitle=rs.getString("NVL(DEPT_TITLE,'부서없음')");
+				int sumSalary=rs.getInt("SUM(SALARY)");
+				
+				deptMap.put(deptTitle, sumSalary);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(stmt!=null) stmt.close();
+				if(conn!=null) conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return deptMap ;
+	}
+
+	public Map<String, Double> selectJobAvgSalary() {
+		Map<String, Double> salaryMap=new HashMap<>();
+		try {
+			Class.forName(driver);
+			conn=DriverManager.getConnection(url,user,pw);
+			
+			String sql="SELECT JOB_NAME, ROUND(AVG(SALARY),1)"
+					+ " FROM EMPLOYEE"
+					+ " NATURAL JOIN JOB"
+					+ " GROUP BY JOB_NAME";
+			
+			stmt=conn.createStatement();
+			rs=stmt.executeQuery(sql);
+			
+			while(rs.next()) {
+				String jobName=rs.getString("JOB_NAME");
+				double avgSalary=rs.getDouble("ROUND(AVG(SALARY),1)");
+				
+				salaryMap.put(jobName, avgSalary);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(stmt!=null) stmt.close();
+				if(conn!=null) conn.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return salaryMap;
 	}
 	
 }
