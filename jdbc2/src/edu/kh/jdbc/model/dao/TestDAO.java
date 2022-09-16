@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import edu.kh.jdbc.common.JDBCTemplate;
 import edu.kh.jdbc.model.vo.TestVO;
 
 // DAO(Data Access Object) : 데이터가 저장된 DB에 접근하는 객체
@@ -69,6 +68,24 @@ public class TestDAO {
 		}
 		
 		// 7. SQL 수행결과 반환
+		return result;
+	}
+
+	public int update(Connection conn, TestVO vo2) throws SQLException {
+		int result=0;
+		
+		try {
+			String sql=prop.getProperty("update");
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1,vo2.getTestTitle());
+			pstmt.setString(2,vo2.getTestContent());
+			pstmt.setInt(3,vo2.getTestNO());
+			
+			result=pstmt.executeUpdate();
+		}finally {
+			close(pstmt);
+		}
+		
 		return result;
 	}
 

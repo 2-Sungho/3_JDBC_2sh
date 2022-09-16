@@ -98,5 +98,19 @@ public class TestService {
 		}
 		return res; // insert 3회 결과 반환
 	}
+
+	public int update(TestVO vo2) throws SQLException {
+		Connection conn=getConnection();
+		
+		int result=dao.update(conn,vo2);
+		if(result>0) commit(conn);
+		
+		else rollback(conn);		
+		
+		close(conn);
+		
+		return result;
+		
+	}
 	
 }
