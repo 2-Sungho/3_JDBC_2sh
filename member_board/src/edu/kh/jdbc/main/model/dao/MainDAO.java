@@ -119,10 +119,10 @@ public class MainDAO {
 			if(rs.next()) {
 				loginMember=new Member();
 				loginMember.setMemberNo(rs.getInt("MEMBER_NO"));
-				loginMember.setMemberId(rs.getNString("MEMBER_ID"));
-				loginMember.setMemberName(rs.getNString("MEMBER_NM"));
-				loginMember.setMemberGender(rs.getNString("MEMBER_GENDER"));
-				loginMember.setEnrollDate(rs.getNString("ENROLL_DATE"));
+				loginMember.setMemberId(rs.getString("MEMBER_ID"));
+				loginMember.setMemberName(rs.getString("MEMBER_NM"));
+				loginMember.setMemberGender(rs.getString("MEMBER_GENDER"));
+				loginMember.setEnrollDate(rs.getString("ENROLL_DATE"));
 			}
 		} finally {
 			close(rs);
