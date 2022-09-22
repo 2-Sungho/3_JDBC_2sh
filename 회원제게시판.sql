@@ -100,6 +100,8 @@ INSERT INTO BOARD
 VALUES (SEQ_BOARD_NO2.NEXTVAL, '샘플제목3', '샘플내용3입니다.', TO_DATE('2022-09-22 12:45:12','YYYY-MM-DD HH24:MI:SS'),DEFAULT,DEFAULT,3);
 INSERT INTO BOARD
 VALUES (SEQ_BOARD_NO2.NEXTVAL, '샘플제목4', '샘플내용4입니다.', DEFAULT ,DEFAULT,DEFAULT,3);
+INSERT INTO BOARD
+VALUES (SEQ_BOARD_NO2.NEXTVAL, '샘플제목5', '샘플내용5입니다.', DEFAULT ,DEFAULT,DEFAULT,3);
 
 COMMIT;
 -------------------------------------------------------------------------------------------------------------------
