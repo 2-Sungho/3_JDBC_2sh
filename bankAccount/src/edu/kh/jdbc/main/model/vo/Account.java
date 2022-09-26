@@ -4,14 +4,14 @@ public class Account {
 
 	private int memberNo;
 	private String memberName;
-	private int accountNo;
-	private int accountPw;
+	private String accountNo;
+	private String accountPw;
 	private int balance=0;
 
 	public Account() {
 	}
 
-	public Account(int memberNo, String memberName, int accountNo, int accountPw, int balance) {
+	public Account(int memberNo, String memberName, String accountNo, String accountPw, int balance) {
 		super();
 		this.memberNo = memberNo;
 		this.memberName = memberName;
@@ -36,19 +36,19 @@ public class Account {
 		this.memberName = memberName;
 	}
 
-	public int getAccountNo() {
+	public String getAccountNo() {
 		return accountNo;
 	}
 
-	public void setAccountNo(int accountNo) {
+	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
 
-	public int getAccountPw() {
+	public String getAccountPw() {
 		return accountPw;
 	}
 
-	public void setAccountPw(int accountPw) {
+	public void setAccountPw(String accountPw) {
 		this.accountPw = accountPw;
 	}
 

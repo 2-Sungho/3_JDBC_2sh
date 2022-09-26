@@ -6,7 +6,7 @@ public class Member {
 	private String memberId;
 	private String memberPw;
 	private String memberName;
-	private int accountNo;
+	private String accountNo;
 	private String secessionFlag;
 	
 	public Member() {
@@ -19,8 +19,16 @@ public class Member {
 		this.memberId = memberId;
 		this.memberPw = memberPw;
 		this.memberName = memberName;
-		AccountNo = accountNo;
+		this.accountNo = accountNo;
 		this.secessionFlag = secessionFlag;
+	}
+	
+
+	public Member(String memberId, String memberPw, String memberName) {
+		super();
+		this.memberId = memberId;
+		this.memberPw = memberPw;
+		this.memberName = memberName;
 	}
 
 	public int getMemberNo() {
@@ -56,11 +64,11 @@ public class Member {
 	}
 
 	public String getAccountNo() {
-		return AccountNo;
+		return accountNo;
 	}
 
-	public void setAccountNo(String accountNo) {
-		AccountNo = accountNo;
+	public void setaccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public String getSecessionFlag() {

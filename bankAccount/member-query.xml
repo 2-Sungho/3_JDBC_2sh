@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>member-query.xml file</comment>
+<!-- 내 정보(계좌) 조회 -->
+	<entry key="selectInfo">
+	SELECT a.ACCOUNT_NO, a.BALANCE
+	FROM "ACCOUNT" a
+	JOIN "MEMBER" USING (MEMBER_NO)
+	WHERE "MEMBER_ID"=?
+	AND SECESSION_FL='N'
+	</entry>
+	
+	<!-- 내 계좌 등록 -->
+	<entry key="insertAccount">
+		INSERT INTO "ACCOUNT"
+		VALUES (?,?,?,?,DEFAULT)
+	</entry>
+
+	<!-- 입금 -->
+	<entry key="deposit">
+	UPDATE "ACCOUNT" SET
+	BALANCE=BALANCE+?
+	WHERE ACCOUNT_NO=?
+	</entry>
+	
+	<!-- 출금 -->
+	<entry key="withdraw">
+	UPDATE "ACCOUNT" SET
+	BALANCE=BALANCE-?
+	WHERE ACCOUNT_NO=?
+	</entry>
+</properties>
