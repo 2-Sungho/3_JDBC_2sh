@@ -212,6 +212,12 @@ public class memberView {
 	}
 	
 	private void remit() {
-		printAccount();
+		System.out.println("***[송금]***");
+		try {
+			
+		} catch(Exception e) {
+			System.out.println("!![송금 중 예외 발생]!!");
+			e.printStackTrace();
+		}
 	}
 }
