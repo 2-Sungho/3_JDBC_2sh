@@ -13,7 +13,7 @@ public class MainView {
 	private MainService service = new MainService();
 	private memberView memberView=new memberView();
 
-	private static Member loginMember = null;
+	public static Member loginMember = null;
 
 	public void mainMenu() {
 		int input = -1;
@@ -21,15 +21,18 @@ public class MainView {
 		do {
 			try {
 				if (loginMember == null) { // 로그인 X
-					System.out.println("\n***** 계좌관리 프로그램 *****\n");
-					System.out.println("1. 로그인");
-					System.out.println("2. 회원 가입");
-					System.out.println("0. 프로그램 종료");
+					System.out.println("\n***** [계좌관리 프로그램] *****\n");
+					System.out.println("--------------------");
+					System.out.println(" | 1. [로그인]");
+					System.out.println(" | 2. [회원 가입]");
+					System.out.println(" | 3. [프로그램 종료]");
+					System.out.println("--------------------");
 
-					System.out.print("\n메뉴 선택: ");
+					System.out.print("[메뉴 선택]: ");
 					input = sc.nextInt();
 					sc.nextLine();
 					System.out.println();
+					System.out.println("====================");
 
 					switch (input) {
 					case 1:
@@ -38,8 +41,9 @@ public class MainView {
 					case 2:
 						signUp();
 						break;
-					case 0:
-						System.out.println("프로그램 종료");
+					case 3:
+						System.out.println("***[프로그램 종료]***");
+						System.exit(0);
 						break;
 					default:
 						System.out.println("메뉴에 작성된 번호만 입력해주세요.");
@@ -49,7 +53,7 @@ public class MainView {
 					}
 				
 			} catch (InputMismatchException e) {
-				System.out.println("\n<<입력 방식이 올바르지 않습니다.>>");
+				System.out.println("\n!![입력 형식이 올바르지 않습니다.]!!\n");
 				sc.nextLine(); // 입력 버퍼에 남아있는 잘못된 문자열 제거
 				e.printStackTrace();
 			}
@@ -62,12 +66,13 @@ public class MainView {
 		String memberId = sc.next();
 		System.out.print("비밀번호: ");
 		String memberPw = sc.next();
-
+		System.out.println("====================");
+		
 		try {
 			loginMember = service.login(memberId, memberPw);
 			System.out.println();
 			if (loginMember != null) { // 로그인 성공
-				System.out.println(loginMember.getMemberName() + "님 환영합니다.");
+				System.out.println("[ "+loginMember.getMemberName()+" ]" + "님 환영합니다.");
 			} else { // 로그인 실패
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
 				System.out.println();
@@ -88,12 +93,12 @@ public class MainView {
 		String memberName=null;
 		try {
 			while(true) {
-				System.out.println("아이디 입력: ");
+				System.out.print("[아이디 입력]: ");
 				memberId=sc.next();
 				int result=service.idDupCheck(memberId);
 				System.out.println();
 				if(result==0) { // 아이디 중복 X
-					System.out.println("[사용 가능한 아이디 입니다.]");
+					System.out.println("[사용 가능한 아이디 입니다.]\n");
 					break;
 				} else {
 					System.out.println("!![이미 사용중인 아이디 입니다.]!!");
@@ -102,13 +107,13 @@ public class MainView {
 			}
 			
 			while(true) {
-				System.out.print("비밀번호 입력: ");
+				System.out.print("[비밀번호 입력]: ");
 				memberPw1 = sc.next();
-				System.out.print("비밀번호 확인: ");
+				System.out.print("[비밀번호 확인]: ");
 				memberPw2 = sc.next();
 				
 				if(memberPw1.equals(memberPw2)) {
-					System.out.println("[일치합니다.]");
+					System.out.println("\n[일치합니다.]\n");
 					break;
 				} else {
 					System.out.println("!![비밀번호가 일치하지 않습니다.]!!");
@@ -116,7 +121,7 @@ public class MainView {
 				System.out.println();
 			}
 			
-			System.out.print("이름 입력: ");
+			System.out.print("[이름 입력]: ");
 			memberName=sc.next();
 			
 			Member member=new Member(memberId, memberPw1, memberName);

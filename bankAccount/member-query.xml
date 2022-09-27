@@ -4,7 +4,7 @@
 <comment>member-query.xml file</comment>
 <!-- 내 정보(계좌) 조회 -->
 	<entry key="selectInfo">
-	SELECT a.ACCOUNT_NO, a.BALANCE
+	SELECT a.ACCOUNT_NO,a.ACCOUNT_PW, a.BALANCE
 	FROM "ACCOUNT" a
 	JOIN "MEMBER" USING (MEMBER_NO)
 	WHERE "MEMBER_ID"=?
@@ -16,18 +16,59 @@
 		INSERT INTO "ACCOUNT"
 		VALUES (?,?,?,?,DEFAULT)
 	</entry>
+	
+	<!-- 계좌 한개 조회 -->
+	<entry key="selectAccount">
+		SELECT *
+		FROM ACCOUNT
+		WHERE ACCOUNT_NO=?
+	</entry>
 
 	<!-- 입금 -->
 	<entry key="deposit">
 	UPDATE "ACCOUNT" SET
-	BALANCE=BALANCE+?
+	BALANCE=(BALANCE+?)
 	WHERE ACCOUNT_NO=?
 	</entry>
 	
 	<!-- 출금 -->
 	<entry key="withdraw">
 	UPDATE "ACCOUNT" SET
-	BALANCE=BALANCE-?
+	BALANCE=(BALANCE-?)
 	WHERE ACCOUNT_NO=?
 	</entry>
+	
+	<!-- 송금 -->
+	<entry key="remit1">
+	UPDATE "ACCOUNT" SET
+	BALANCE=(BALANCE-?)
+	WHERE ACCOUNT_NO=?
+	</entry>
+	
+	<entry key="remit2">
+	UPDATE "ACCOUNT" SET
+	BALANCE=(BALANCE+?)
+	WHERE ACCOUNT_NO=?
+	</entry>
+	
+	<!-- 프로그램 내 전체 계좌 -->
+	<entry key="selectAll">
+		SELECT MEMBER_NO,MEMBER_NM,ACCOUNT_NO,BALANCE
+		FROM "ACCOUNT"
+	</entry>
+	
+	<!-- 계좌 중복 검사 -->
+	<entry key="checkAccountNo">
+		SELECT COUNT(*)
+		FROM "ACCOUNT" 
+		WHERE ACCOUNT_NO=? 
+	</entry>
+	
+	<!-- 비밀번호 중복 검사 -->
+	<entry key="checkAccountPw">
+		SELECT COUNT(*)
+		FROM "ACCOUNT" 
+		WHERE ACCOUNT_PW=? 
+	</entry>
+
 </properties>
