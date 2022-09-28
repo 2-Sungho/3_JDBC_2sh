@@ -198,7 +198,7 @@ public class memberView {
 					while (true) {
 						System.out.print("[비밀번호 입력]: ");
 						String accountPw = sc.next();
-						int result2 = service.checkAccountPw(accountPw);
+						int result2 = service.checkAccountPw(accountNo, accountPw);
 						if (result2 == 0) {
 							System.out.println("!![비밀번호를 잘못 입력하셨습니다.]!!");
 							System.out.println(" [다시 입력해주세요] ");
@@ -268,22 +268,35 @@ public class memberView {
 								System.out.println("!![잔액이 부족합니다]!!");
 								break;
 							} else {
-								System.out.print("[정말 송금하시겠습니까?(Y/N)]: ");
-								char ch = sc.next().toUpperCase().charAt(0);
-								if (ch == 'Y') {
-									int remit1 = service.remit(accountNo, rMoney);
-									int remit2 = service.remit2(accountNo2, rMoney);
-									if (remit1 + remit2 > 1) {
-										System.out.println("***[송금 성공]***");
-										break;
+								while (true) {
+									System.out.print("[비밀번호 입력]: ");
+									String accountPw = sc.next();
+
+									int result3 = service.checkAccountPw(accountNo, accountPw);
+									if (result3 == 0) {
+										System.out.println("!![비밀번호를 잘못 입력하셨습니다.]!!");
+										System.out.println(" [다시 입력해주세요] ");
+										System.out.println("--------------------------------------");
 									} else {
-										System.out.println("!![송금 실패]!!");
-										break;
+										System.out.print("[정말 송금하시겠습니까?(Y/N)]: ");
+										char ch = sc.next().toUpperCase().charAt(0);
+										if (ch == 'Y') {
+											int remit1 = service.remit(accountNo, rMoney);
+											int remit2 = service.remit2(accountNo2, rMoney);
+											if (remit1 + remit2 > 1) {
+												System.out.println("***[송금 성공]***");
+												break;
+											} else {
+												System.out.println("!![송금 실패]!!");
+												break;
+											}
+										} else {
+											System.out.println("...[송금 취소]...");
+											break;
+										}
 									}
-								} else {
-									System.out.println("...[송금 취소]...");
-									break;
 								}
+								break;
 							}
 						}
 					}

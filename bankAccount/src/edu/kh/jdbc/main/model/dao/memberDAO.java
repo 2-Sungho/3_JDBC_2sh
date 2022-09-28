@@ -215,12 +215,13 @@ public class memberDAO {
 		return result;
 	}
 
-	public int checkAccountPw(Connection conn, String accountPw) throws Exception {
+	public int checkAccountPw(Connection conn,String accountNo, String accountPw) throws Exception {
 		int result=0;
 		try {
 			String sql=prop.getProperty("checkAccountPw");
 			pstmt=conn.prepareStatement(sql);
-			pstmt.setString(1, accountPw);
+			pstmt.setString(1, accountNo);
+			pstmt.setString(2, accountPw);
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {

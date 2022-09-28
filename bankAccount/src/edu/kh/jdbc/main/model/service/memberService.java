@@ -86,9 +86,9 @@ public class memberService {
 		return result;
 	}
 
-	public int checkAccountPw(String accountPw) throws Exception{
+	public int checkAccountPw(String accountNo,String accountPw) throws Exception{
 		Connection conn=getConnection();
-		int result=dao.checkAccountPw(conn,accountPw);
+		int result=dao.checkAccountPw(conn,accountNo,accountPw);
 		close(conn);
 		return result;
 	}

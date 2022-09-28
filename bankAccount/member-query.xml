@@ -64,11 +64,12 @@
 		WHERE ACCOUNT_NO=? 
 	</entry>
 	
-	<!-- 비밀번호 중복 검사 -->
+	<!-- 비밀번호 검사 -->
 	<entry key="checkAccountPw">
 		SELECT COUNT(*)
 		FROM "ACCOUNT" 
-		WHERE ACCOUNT_PW=? 
+		WHERE ACCOUNT_NO=?
+		AND ACCOUNT_PW=?
 	</entry>
 
 </properties>
